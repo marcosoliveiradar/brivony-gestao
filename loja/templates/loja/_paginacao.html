@@ -1,0 +1,7 @@
+{% if is_paginated %}
+<nav class="d-flex justify-content-between mt-3" aria-label="Paginação">
+  {% if page_obj.has_previous %}<a class="btn btn-secundario" href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status|urlencode }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q|urlencode }}{% endif %}">Anterior</a>{% else %}<span></span>{% endif %}
+  <span class="align-self-center">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}<a class="btn btn-secundario" href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status|urlencode }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q|urlencode }}{% endif %}">Próxima</a>{% else %}<span></span>{% endif %}
+</nav>
+{% endif %}

@@ -1,0 +1,53 @@
+{% load static %}<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Brivony Gestão{% endblock %}</title>
+  {# Bootstrap 5.3.3 e Bootstrap Icons 1.11.3 servidos localmente (mais rápido em 4G e sem depender de CDN). #}
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body class="{% if user.is_authenticated %}com-menu{% endif %}">
+  <a class="visually-hidden-focusable btn btn-light m-2" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topo">
+    <div class="container-app d-flex align-items-center justify-content-between">
+      {% block topo %}
+        <a class="marca" href="{% url 'loja:painel' %}">Brivony Gestão</a>
+        {% if user.is_authenticated %}
+          <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+            <button type="submit" class="btn btn-topo"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sair</button>
+          </form>
+        {% endif %}
+      {% endblock %}
+    </div>
+  </header>
+
+  <main id="conteudo" class="container-app py-3">
+    {% for message in messages %}
+      <div class="alert alerta alerta-{{ message.tags }}" role="{% if message.tags == 'error' %}alert{% else %}status{% endif %}">
+        {% if message.tags == 'success' %}<i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+        {% elif message.tags == 'error' %}<i class="bi bi-x-circle-fill" aria-hidden="true"></i>
+        {% else %}<i class="bi bi-info-circle-fill" aria-hidden="true"></i>{% endif %}
+        <span>{{ message }}</span>
+      </div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+
+  {% if user.is_authenticated %}
+  <nav class="menu-inferior" aria-label="Menu principal">
+    <a href="{% url 'loja:painel' %}" class="{% if aba == 'inicio' %}ativo{% endif %}" {% if aba == 'inicio' %}aria-current="page"{% endif %}>
+      <i class="bi bi-house-door" aria-hidden="true"></i><span>Início</span></a>
+    <a href="{% url 'loja:pedidos' %}" class="{% if aba == 'pedidos' %}ativo{% endif %}" {% if aba == 'pedidos' %}aria-current="page"{% endif %}>
+      <i class="bi bi-bag" aria-hidden="true"></i><span>Pedidos</span></a>
+    <a href="{% url 'loja:estoque' %}" class="{% if aba == 'estoque' %}ativo{% endif %}" {% if aba == 'estoque' %}aria-current="page"{% endif %}>
+      <i class="bi bi-box-seam" aria-hidden="true"></i><span>Estoque</span></a>
+    <a href="{% url 'loja:clientes' %}" class="{% if aba == 'clientes' %}ativo{% endif %}" {% if aba == 'clientes' %}aria-current="page"{% endif %}>
+      <i class="bi bi-people" aria-hidden="true"></i><span>Clientes</span></a>
+  </nav>
+  {% endif %}
+  {% block scripts %}{% endblock %}
+</body>
+</html>

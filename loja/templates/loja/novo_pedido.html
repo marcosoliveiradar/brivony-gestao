@@ -1,0 +1,62 @@
+{% extends "base.html" %}{% load static loja_tags %}
+{% block title %}Novo pedido · Brivony Gestão{% endblock %}
+{% block topo %}
+  <a class="link-voltar" href="{% url 'loja:painel' %}"><i class="bi bi-chevron-left" aria-hidden="true"></i> Voltar</a>
+  <h1>Novo pedido</h1>
+  <span style="width:72px" aria-hidden="true"></span>
+{% endblock %}
+{% block content %}
+{% if form.non_field_errors %}
+  <div class="alert alerta alerta-error" role="alert"><i class="bi bi-x-circle-fill" aria-hidden="true"></i>
+    <span>{% for e in form.non_field_errors %}{{ e }} {% endfor %}</span></div>
+{% endif %}
+{% if formset.non_form_errors %}
+  <div class="alert alerta alerta-error" role="alert"><i class="bi bi-x-circle-fill" aria-hidden="true"></i>
+    <span>{% for e in formset.non_form_errors %}{{ e }} {% endfor %}</span></div>
+{% endif %}
+
+<form method="post" id="form-pedido" novalidate data-buscar-cliente="{% url 'loja:cliente_buscar' %}">
+  {% csrf_token %}
+  <div class="mb-2">
+    <label class="form-label" for="{{ form.telefone.id_for_label }}">{{ form.telefone.label }}</label>
+    {{ form.telefone }}
+    <div class="form-text">DDD + número. Ex.: (11) 90000-0000</div>
+    {% for e in form.telefone.errors %}<div class="erro-campo"><i class="bi bi-x-circle-fill" aria-hidden="true"></i> {{ e }}</div>{% endfor %}
+  </div>
+  <div id="cliente-status" aria-live="polite" class="mb-1">
+    {% if cliente_encontrada %}<span class="texto-ok"><i class="bi bi-check-circle" aria-hidden="true"></i> {{ cliente_encontrada.nome }} – cliente encontrada</span>{% endif %}
+  </div>
+  <a id="link-cadastrar" class="d-inline-flex align-items-center fw-semibold mb-3" style="min-height:44px"
+     href="{% url 'loja:cliente_novo' %}?next={% url 'loja:pedido_novo' %}">+ Cadastrar cliente</a>
+
+  <div class="mb-3">
+    <label class="form-label" for="buscar-peca">Buscar peça</label>
+    <input id="buscar-peca" class="form-control" type="search" placeholder="Digite o nome da peça" autocomplete="off">
+    <div class="form-text">Filtra a lista de peças abaixo.</div>
+  </div>
+
+  <h2 class="h5">Itens do pedido</h2>
+  {{ formset.management_form }}
+  <div id="itens">
+    {% for f in formset %}{% include "loja/_item_pedido.html" with f=f %}{% endfor %}
+  </div>
+  <template id="modelo-item">{% include "loja/_item_pedido.html" with f=formset.empty_form %}</template>
+  <button type="button" id="adicionar-item" class="btn btn-secundario w-100 mb-3"><i class="bi bi-plus-lg" aria-hidden="true"></i> Adicionar outra peça</button>
+
+  <div class="mb-3">
+    <label class="form-label" for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+    {{ form.status }}
+  </div>
+
+  <div class="d-flex justify-content-between align-items-baseline">
+    <span class="h4 mb-0">Total</span>
+    <span class="h4 mb-0" id="total" aria-live="polite">R$ 0,00</span>
+  </div>
+  <p class="texto-suave">Total considera apenas itens válidos. O valor final é conferido pelo sistema ao salvar.</p>
+
+  <div class="rodape-fixo">
+    <button type="submit" class="btn btn-principal w-100" id="salvar">Salvar pedido</button>
+  </div>
+</form>
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/novo_pedido.js' %}"></script>{% endblock %}

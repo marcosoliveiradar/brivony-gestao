@@ -1,0 +1,46 @@
+{% extends "base.html" %}{% load loja_tags %}
+{% block title %}Painel · Brivony Gestão{% endblock %}
+{% block content %}
+<h1 class="h4 mb-3">Olá, bem-vinda!</h1>
+
+<section aria-label="Resumo do negócio" class="row g-2 mb-3">
+  <div class="col-12">
+    <div class="cartao cartao-resumo">
+      <div class="rotulo"><i class="bi bi-cash-coin" aria-hidden="true"></i> Vendido no mês</div>
+      <div class="valor" data-testid="vendido-mes">{{ vendido_mes|brl }}</div>
+    </div>
+  </div>
+  <div class="col-6">
+    <a class="cartao cartao-resumo d-block text-decoration-none text-reset" href="{% url 'loja:pedidos' %}?status=pendentes">
+      <div class="rotulo"><i class="bi bi-hourglass-split" aria-hidden="true"></i> Pedidos pendentes</div>
+      <div class="valor" data-testid="pendentes">{{ pedidos_pendentes }}</div>
+    </a>
+  </div>
+  <div class="col-6">
+    <a class="cartao cartao-resumo d-block text-decoration-none {% if estoque_baixo %}cartao-aviso{% else %}text-reset{% endif %}" href="{% url 'loja:estoque' %}?filtro=baixo">
+      <div class="rotulo">{% if estoque_baixo %}<i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>{% else %}<i class="bi bi-box-seam" aria-hidden="true"></i>{% endif %} Estoque baixo</div>
+      <div class="valor" data-testid="estoque-baixo">{{ estoque_baixo }} peça{{ estoque_baixo|pluralize:"s" }}</div>
+    </a>
+  </div>
+</section>
+
+<a class="btn btn-principal w-100 btn-lg mb-2" href="{% url 'loja:pedido_novo' %}">
+  <i class="bi bi-plus-lg" aria-hidden="true"></i> Novo pedido</a>
+<div class="d-flex gap-2 mb-4">
+  <a class="btn btn-secundario flex-fill" href="{% url 'loja:estoque' %}"><i class="bi bi-box-seam" aria-hidden="true"></i> Estoque</a>
+  <a class="btn btn-secundario flex-fill" href="{% url 'loja:clientes' %}"><i class="bi bi-people" aria-hidden="true"></i> Clientes</a>
+</div>
+
+<section aria-labelledby="mais-vendidas">
+  <h2 id="mais-vendidas" class="h5">Mais vendidas no mês</h2>
+  {% if mais_vendidas %}
+    <ol class="cartao ps-4 mb-0">
+      {% for p in mais_vendidas %}
+        <li class="py-1"><strong>{{ p.produto__nome }}</strong> — {{ p.unidades }} unidade{{ p.unidades|pluralize:"s" }}</li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p class="cartao mb-0">Nenhuma venda registrada neste mês ainda.</p>
+  {% endif %}
+</section>
+{% endblock %}

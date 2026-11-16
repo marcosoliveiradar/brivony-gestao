@@ -6,6 +6,7 @@ from django.db import IntegrityError, transaction
 from django.test import TestCase, override_settings
 
 from loja.models import Cliente, ItemPedido, Pedido, Produto
+from loja.templatetags.loja_tags import brl
 
 from .fabricas import criar_cliente, criar_produto
 
@@ -75,6 +76,12 @@ class PedidoTests(TestCase):
     def test_status_inicial_e_aguardando_pagamento(self):
         pedido = Pedido.objects.create(cliente=criar_cliente())
         self.assertEqual(pedido.status, Pedido.Status.AGUARDANDO_PAGAMENTO)
+
+
+class FormatacaoMoedaTests(TestCase):
+    def test_brl(self):
+        self.assertEqual(brl(Decimal("2340")), "R$ 2.340,00")
+        self.assertEqual(brl("89.9"), "R$ 89,90")
 
 
 class PopularDemoTests(TestCase):

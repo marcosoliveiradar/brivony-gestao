@@ -1,1 +1,88 @@
-/* Estilos do Brivony Gestão. */
+/* Brivony Gestão — estilos com foco em acessibilidade (RNF04):
+   texto mínimo de 16px, alvos de toque de 44x44px, contraste >= 4,5:1,
+   estados indicados por cor + ícone + texto. */
+:root {
+  --marca: #9c1b5b;        /* branco sobre esta cor: contraste 7,6:1 */
+  --marca-escura: #7a1447;
+  --texto: #1f2328;
+  --texto-suave: #4b5563;  /* 7,5:1 sobre branco */
+  --fundo: #f3f4f6;
+  --borda: #6b7280;
+  --ok: #1a6b32;           /* 6,4:1 */
+  --ok-fundo: #e3f4e8;
+  --aviso: #7a5200;        /* 6,9:1 */
+  --aviso-fundo: #fff4d6;
+  --aviso-borda: #d29a00;
+  --erro: #a3161c;         /* 7,2:1 */
+  --erro-fundo: #fbe3e4;
+}
+html { font-size: 16px; }
+body { background: var(--fundo); color: var(--texto); font-size: 1rem; line-height: 1.5; }
+body.com-menu { padding-bottom: 88px; }
+.container-app { max-width: 640px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+.small, small { font-size: 1rem !important; }
+a { color: var(--marca); }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid #1d4ed8; outline-offset: 2px;
+}
+
+.topo { background: var(--marca); color: #fff; min-height: 64px; display: flex; align-items: center; }
+.topo .container-app { width: 100%; }
+.topo h1, .marca { color: #fff; font-size: 1.375rem; font-weight: 700; text-decoration: none; margin: 0; }
+.btn-topo { color: #fff; border: 2px solid #fff; min-height: 44px; min-width: 44px; font-size: 1rem; }
+.btn-topo:hover { background: #fff; color: var(--marca); }
+.link-voltar { color: #fff; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; gap: .25rem; font-weight: 600; }
+
+.btn { min-height: 44px; min-width: 44px; font-size: 1rem; }
+.btn-principal { background: var(--marca); color: #fff; font-weight: 700; min-height: 52px; border: 0; }
+.btn-principal:hover, .btn-principal:focus { background: var(--marca-escura); color: #fff; }
+.btn-secundario { background: #fff; color: var(--marca); border: 2px solid var(--marca); font-weight: 600; }
+.btn-secundario:hover { background: var(--marca); color: #fff; }
+.form-control, .form-select { min-height: 48px; font-size: 1rem; border: 2px solid var(--borda); }
+.form-label { font-weight: 600; }
+.form-text { color: var(--texto-suave); font-size: 1rem; }
+.invalid-feedback, .erro-campo { color: var(--erro); font-size: 1rem; display: block; font-weight: 600; }
+
+.cartao { background: #fff; border: 1px solid #d1d5db; border-radius: 12px; padding: 16px; }
+.cartao-resumo .valor { font-size: 1.75rem; font-weight: 700; }
+.cartao-resumo .rotulo { color: var(--texto-suave); }
+.cartao-aviso { border: 2px solid var(--aviso-borda); background: var(--aviso-fundo); }
+.cartao-aviso .valor, .cartao-aviso .rotulo { color: var(--aviso); }
+.cartao-erro { border: 2px solid var(--erro); }
+
+.alerta { display: flex; gap: .5rem; align-items: flex-start; font-weight: 600; border-width: 2px; }
+.alerta i { font-size: 1.25rem; line-height: 1.2; }
+.alerta-success { background: var(--ok-fundo); color: var(--ok); border-color: var(--ok); }
+.alerta-error { background: var(--erro-fundo); color: var(--erro); border-color: var(--erro); }
+.alerta-info, .alerta-warning { background: var(--aviso-fundo); color: var(--aviso); border-color: var(--aviso-borda); }
+
+.selo { display: inline-flex; align-items: center; gap: .25rem; padding: 2px 10px; border-radius: 999px; font-weight: 700; font-size: 1rem; }
+.selo-aviso { background: var(--aviso-fundo); color: var(--aviso); border: 1px solid var(--aviso-borda); }
+.selo-erro { background: var(--erro-fundo); color: var(--erro); border: 1px solid var(--erro); }
+.selo-ok { background: var(--ok-fundo); color: var(--ok); border: 1px solid var(--ok); }
+.texto-ok { color: var(--ok); font-weight: 600; }
+.texto-suave { color: var(--texto-suave); }
+.qtd-grande { font-size: 1.75rem; font-weight: 700; line-height: 1; }
+
+.filtro { display: flex; gap: 8px; }
+.filtro a { flex: 1; min-height: 46px; display: flex; align-items: center; justify-content: center; gap: .25rem;
+  border: 2px solid var(--marca); border-radius: 8px; color: var(--marca); text-decoration: none; font-weight: 600; background: #fff; }
+.filtro a.ativo { background: var(--marca); color: #fff; }
+
+.contador { display: flex; align-items: center; gap: 12px; }
+.contador button { width: 44px; height: 44px; border: 2px solid var(--marca); color: var(--marca); background: #fff; border-radius: 8px; font-size: 1.25rem; font-weight: 700; }
+.contador input { width: 64px; text-align: center; font-weight: 700; }
+
+.rodape-fixo { position: sticky; bottom: 80px; background: var(--fundo); padding: 12px 0; }
+
+.menu-inferior { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #d1d5db;
+  display: flex; justify-content: space-around; z-index: 10; }
+.menu-inferior a { flex: 1; min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: var(--texto-suave); text-decoration: none; font-size: 1rem; border-bottom: 4px solid transparent; }
+.menu-inferior a i { font-size: 1.25rem; }
+.menu-inferior a.ativo { color: var(--marca); font-weight: 700; border-bottom-color: var(--marca); text-decoration: underline; text-underline-offset: 4px; }
+
+.lista-limpa { list-style: none; padding: 0; margin: 0; }
+.lista-limpa > li + li { margin-top: 12px; }
+.btn-link { color: var(--marca); font-weight: 600; }
+.btn-secundario:focus:not(:focus-visible), .btn-secundario:active { background: #fff; color: var(--marca); border-color: var(--marca); }

@@ -1,0 +1,4 @@
+{% if pedido.status == 'cancelado' %}<span class="selo selo-erro"><i class="bi bi-x-circle-fill" aria-hidden="true"></i> {{ pedido.get_status_display }}</span>
+{% elif pedido.status == 'entregue' %}<span class="selo selo-ok"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> {{ pedido.get_status_display }}</span>
+{% elif pedido.status == 'aguardando_pagamento' %}<span class="selo selo-aviso"><i class="bi bi-hourglass-split" aria-hidden="true"></i> {{ pedido.get_status_display }}</span>
+{% else %}<span class="selo selo-ok"><i class="bi bi-arrow-right-circle" aria-hidden="true"></i> {{ pedido.get_status_display }}</span>{% endif %}
