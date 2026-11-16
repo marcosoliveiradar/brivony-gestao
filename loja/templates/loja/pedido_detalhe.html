@@ -1,0 +1,33 @@
+{% extends "base.html" %}{% load loja_tags %}
+{% block title %}Pedido nº {{ pedido.pk }} · Brivony Gestão{% endblock %}
+{% block content %}
+<a href="{% url 'loja:pedidos' %}" class="d-inline-flex align-items-center mb-2" style="min-height:44px"><i class="bi bi-chevron-left" aria-hidden="true"></i> Pedidos</a>
+<h1 class="h4">Pedido nº {{ pedido.pk }}</h1>
+<p class="mb-1"><strong>{{ pedido.cliente.nome }}</strong> · {{ pedido.cliente.telefone_formatado }}</p>
+<p class="texto-suave">Criado em {{ pedido.criado_em|date:"d/m/Y H:i" }}</p>
+<p>{% include "loja/_selo_status.html" %}</p>
+
+<h2 class="h5">Itens</h2>
+<ul class="lista-limpa mb-3">
+  {% for item in pedido.itens.all %}
+  <li class="cartao d-flex justify-content-between">
+    <div>
+      <div class="fw-bold">{{ item.produto.nome }}</div>
+      <div class="texto-suave">Tam. {{ item.produto.get_tamanho_display }} · {{ item.produto.cor }} · {{ item.quantidade }} × {{ item.preco_unitario|brl }}</div>
+    </div>
+    <div class="fw-bold">{{ item.subtotal|brl }}</div>
+  </li>
+  {% endfor %}
+</ul>
+<div class="d-flex justify-content-between h4 mb-4"><span>Total</span><span>{{ pedido.total|brl }}</span></div>
+
+{% if not pedido.cancelado %}
+<form method="post" action="{% url 'loja:pedido_status' pedido.pk %}" class="cartao mb-3">
+  {% csrf_token %}
+  <label class="form-label" for="{{ status_form.status.id_for_label }}">Mudar status</label>
+  {{ status_form.status }}
+  <div class="form-text">Ao escolher “Cancelado”, as peças voltam para o estoque.</div>
+  <button type="submit" class="btn btn-principal w-100 mt-2">Atualizar status</button>
+</form>
+{% endif %}
+{% endblock %}
