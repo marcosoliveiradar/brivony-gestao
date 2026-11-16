@@ -1,0 +1,38 @@
+name: Relatar um erro
+description: Algo não funcionou como deveria.
+title: "fix: "
+labels: [bug]
+body:
+  - type: textarea
+    id: o-que-aconteceu
+    attributes:
+      label: O que aconteceu?
+      description: Descreva o erro com suas palavras.
+    validations:
+      required: true
+  - type: textarea
+    id: passos
+    attributes:
+      label: Como repetir o erro
+      placeholder: |
+        1. Entrar em Novo pedido
+        2. Escolher a peça...
+        3. Tocar em Salvar pedido
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: O que era esperado?
+    validations:
+      required: true
+  - type: dropdown
+    id: tela
+    attributes:
+      label: Em qual tela?
+      options: [Painel, Novo pedido, Estoque, Pedidos, Clientes, Login, Outra]
+  - type: input
+    id: aparelho
+    attributes:
+      label: Aparelho e navegador
+      placeholder: "Ex.: Android, Chrome"
