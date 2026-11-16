@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ titulo }} · Brivony Gestão{% endblock %}
+{% block content %}
+<h1 class="h4 mb-3">{{ titulo }}</h1>
+{% if form.non_field_errors %}
+  <div class="alert alerta alerta-error" role="alert"><i class="bi bi-x-circle-fill" aria-hidden="true"></i>
+    <span>{% for e in form.non_field_errors %}{{ e }} {% endfor %}</span></div>
+{% endif %}
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+  {% for field in form %}
+    <div class="mb-3">
+      <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="texto-suave fw-normal">(opcional)</span>{% endif %}</label>
+      {{ field }}
+      {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+      {% for e in field.errors %}<div class="erro-campo"><i class="bi bi-x-circle-fill" aria-hidden="true"></i> {{ e }}</div>{% endfor %}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-principal w-100">Salvar</button>
+</form>
+{% if object and object.pk and object.ativo %}
+<form method="post" action="{% url 'loja:produto_inativar' object.pk %}" class="mt-3">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-outline-danger w-100">Retirar peça do catálogo</button>
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}{% load loja_tags %}
+{% block title %}Estoque · Brivony Gestão{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 mb-0">Estoque</h1>
+  <a class="btn btn-secundario" href="{% url 'loja:produto_novo' %}"><i class="bi bi-plus-lg" aria-hidden="true"></i> Cadastrar peça</a>
+</div>
+
+<nav class="filtro mb-3" aria-label="Filtrar peças">
+  <a href="{% url 'loja:estoque' %}" class="{% if filtro != 'baixo' %}ativo{% endif %}" {% if filtro != 'baixo' %}aria-current="true"{% endif %}>Todas</a>
+  <a href="{% url 'loja:estoque' %}?filtro=baixo" class="{% if filtro == 'baixo' %}ativo{% endif %}" {% if filtro == 'baixo' %}aria-current="true"{% endif %}>
+    <i class="bi bi-exclamation-triangle" aria-hidden="true"></i> Estoque baixo</a>
+</nav>
+
+<form method="get" class="mb-3" role="search">
+  {% if filtro == 'baixo' %}<input type="hidden" name="filtro" value="baixo">{% endif %}
+  <label for="busca" class="form-label">Buscar peça</label>
+  <div class="d-flex gap-2">
+    <input id="busca" name="q" class="form-control" value="{{ busca }}" placeholder="Nome ou cor">
+    <button class="btn btn-secundario flex-shrink-0" type="submit">Buscar</button>
+  </div>
+</form>
+
+{% if produtos %}
+<ul class="lista-limpa">
+  {% for p in produtos %}
+  <li class="cartao d-flex justify-content-between align-items-center gap-2">
+    <div>
+      <div class="fw-bold">{{ p.nome }}</div>
+      <div class="texto-suave">Tam. {{ p.get_tamanho_display }} · {{ p.cor }} · {{ p.preco|brl }}</div>
+      {% if p.esgotado %}
+        <span class="selo selo-erro mt-1"><i class="bi bi-x-circle-fill" aria-hidden="true"></i> Esgotado</span>
+      {% elif p.estoque_baixo %}
+        <span class="selo selo-aviso mt-1"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Estoque baixo</span>
+      {% endif %}
+      <div class="mt-2"><a href="{% url 'loja:produto_editar' p.pk %}" class="btn btn-sm btn-link px-0">Editar ou repor</a></div>
+    </div>
+    <div class="text-end">
+      <div class="qtd-grande" aria-label="{{ p.quantidade_estoque }} unidades">{{ p.quantidade_estoque }}</div>
+      <div class="texto-suave">unid.</div>
+      {% with antes=estoque_anterior|get_item:p.pk %}{% if antes is not None %}
+        <div class="texto-suave">antes {{ antes }}</div>
+      {% endif %}{% endwith %}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p class="cartao">Nenhuma peça encontrada.</p>
+{% endif %}
+
+<a class="btn btn-principal w-100 mt-3" href="{% url 'loja:pedido_novo' %}"><i class="bi bi-plus-lg" aria-hidden="true"></i> Novo pedido</a>
+{% endblock %}
