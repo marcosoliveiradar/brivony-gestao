@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Django
+*.sqlite3
+media/
+staticfiles/
+
+# Segredos e ambiente
+.env
+
+# Testes
+.coverage
+htmlcov/
+coverage.xml
+
+# Editores
+.vscode/
+.idea/
+.DS_Store
