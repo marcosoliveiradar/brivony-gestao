@@ -1,0 +1,43 @@
+name: Feedback de usabilidade
+description: Registro de um teste de uso com a comunidade parceira.
+title: "feedback: "
+labels: [usabilidade]
+body:
+  - type: markdown
+    attributes:
+      value: "Não coloque nomes, telefones ou outros dados pessoais reais. Identifique a pessoa só pelo papel (ex.: proprietária)."
+  - type: input
+    id: rodada
+    attributes:
+      label: Rodada de validação
+      placeholder: "Ex.: Rodada 1 - 20/11/2026"
+    validations:
+      required: true
+  - type: input
+    id: participante
+    attributes:
+      label: Papel de quem testou
+      placeholder: "Ex.: proprietária da loja"
+  - type: input
+    id: tarefa
+    attributes:
+      label: Tarefa pedida
+      placeholder: "Ex.: registrar um pedido de 2 peças para uma cliente nova"
+    validations:
+      required: true
+  - type: textarea
+    id: observado
+    attributes:
+      label: O que foi observado
+      description: Dificuldades, dúvidas, comentários e tempo aproximado.
+    validations:
+      required: true
+  - type: dropdown
+    id: gravidade
+    attributes:
+      label: Impacto
+      options: [Impede a tarefa, Atrapalha, Pequeno incômodo, Sugestão]
+  - type: textarea
+    id: ajuste
+    attributes:
+      label: Ajuste proposto
