@@ -120,11 +120,14 @@ def alterar_status(pedido, novo_status):
         raise ValidationError("Status inválido.")
     if novo_status == Pedido.Status.CANCELADO:
         return cancelar_pedido(pedido)
-    if pedido.status == Pedido.Status.CANCELADO:
-        raise ValidationError("Pedido cancelado não pode mudar de status.")
-    pedido.status = novo_status
-    pedido.save(update_fields=["status", "atualizado_em"])
-    return pedido
+    with transaction.atomic():
+        # Relê do banco: o objeto em memória pode estar desatualizado.
+        atual = Pedido.objects.select_for_update().get(pk=pedido.pk)
+        if atual.status == Pedido.Status.CANCELADO:
+            raise ValidationError("Pedido cancelado não pode mudar de status.")
+        atual.status = novo_status
+        atual.save(update_fields=["status", "atualizado_em"])
+    return atual
 
 
 def buscar_cliente_por_telefone(telefone):
