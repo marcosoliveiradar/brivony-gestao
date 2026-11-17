@@ -8,6 +8,10 @@
   <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <script>
+    // Aplica a preferência de texto maior antes de desenhar a página (evita "pulo" visual).
+    try { if (localStorage.getItem("texto-maior") === "1") document.documentElement.classList.add("texto-maior"); } catch (e) {}
+  </script>
 </head>
 <body class="{% if user.is_authenticated %}com-menu{% endif %}">
   <a class="visually-hidden-focusable btn btn-light m-2" href="#conteudo">Pular para o conteúdo</a>
@@ -15,11 +19,14 @@
     <div class="container-app d-flex align-items-center justify-content-between">
       {% block topo %}
         <a class="marca" href="{% url 'loja:painel' %}">Brivony Gestão</a>
-        {% if user.is_authenticated %}
-          <form method="post" action="{% url 'logout' %}">{% csrf_token %}
-            <button type="submit" class="btn btn-topo"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sair</button>
-          </form>
-        {% endif %}
+        <div class="d-flex gap-2">
+          {% include "_botao_texto.html" %}
+          {% if user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+              <button type="submit" class="btn btn-topo"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sair</button>
+            </form>
+          {% endif %}
+        </div>
       {% endblock %}
     </div>
   </header>
@@ -48,6 +55,7 @@
       <i class="bi bi-people" aria-hidden="true"></i><span>Clientes</span></a>
   </nav>
   {% endif %}
+  <script src="{% static 'js/acessibilidade.js' %}"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

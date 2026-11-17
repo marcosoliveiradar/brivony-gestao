@@ -3,7 +3,7 @@
 {% block topo %}
   <a class="link-voltar" href="{% url 'loja:painel' %}"><i class="bi bi-chevron-left" aria-hidden="true"></i> Voltar</a>
   <h1>Novo pedido</h1>
-  <span style="width:72px" aria-hidden="true"></span>
+  {% include "_botao_texto.html" %}
 {% endblock %}
 {% block content %}
 {% if form.non_field_errors %}
