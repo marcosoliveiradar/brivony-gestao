@@ -52,7 +52,7 @@ O **Brivony Gestão** é o MVP que resolve isso: a dona registra a venda em segu
 - 🔒 **RNF01 Acesso:** login obrigatório em todas as telas; senhas com PBKDF2.
 - 🛡️ **RNF02 Segurança (OWASP):** ORM, validação no servidor, CSRF, escape de HTML, `DEBUG` desligado por padrão, segredos em variáveis de ambiente. Preço e estoque vêm sempre do banco, nunca do formulário.
 - ⚡ **RNF03 Desempenho:** CSS e ícones servidos pelo próprio sistema (sem CDN), comprimidos pelo WhiteNoise.
-- ♿ **RNF04 Acessibilidade:** botões de 44×44 px, texto de 16 px, contraste mínimo de 4,5:1, rótulo visível em todo campo e alertas com **texto + ícone + cor**.
+- ♿ **RNF04 Acessibilidade:** botão **A+** que aumenta o texto de todo o sistema, botões de 44×44 px, texto de 16 px, contraste mínimo de 4,5:1, rótulo visível em todo campo e alertas com **texto + ícone + cor**.
 
 ## 🏗️ Arquitetura
 
