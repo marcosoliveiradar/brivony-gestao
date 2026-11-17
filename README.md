@@ -12,6 +12,8 @@
 ![Cobertura](https://img.shields.io/badge/cobertura-93%25-brightgreen)
 [![Licença: MIT](https://img.shields.io/badge/licença-MIT-blue.svg)](LICENSE)
 
+**🌐 Sistema no ar:** [brivony-gestao.onrender.com](https://brivony-gestao.onrender.com) · [status (/saude/)](https://brivony-gestao.onrender.com/saude/)
+
 [Sobre](#-sobre) · [Telas](#-telas) · [Funcionalidades](#-funcionalidades) · [Arquitetura](#-arquitetura) · [Como rodar](#-como-rodar) · [Testes e CI](#-testes-e-integração-contínua) · [Contribuir](#-como-contribuir)
 
 </div>
@@ -200,7 +202,7 @@ A cada push e pull request, o **GitHub Actions** sobe um PostgreSQL 16 real, rod
 - [ ] Rodadas de validação de usabilidade com a loja parceira
 - [ ] Relatório de vendas por período
 - [ ] Foto da peça na tela de novo pedido
-- [ ] Publicação em servidor com HTTPS
+- [x] Publicação em servidor com HTTPS ([Render](https://brivony-gestao.onrender.com)) e monitoramento de disponibilidade
 
 ## 🤝 Como contribuir
 
