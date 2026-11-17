@@ -6,6 +6,7 @@ app_name = "loja"
 
 urlpatterns = [
     path("", views.PainelView.as_view(), name="painel"),
+    path("saude/", views.SaudeView.as_view(), name="saude"),
     path("estoque/", views.EstoqueView.as_view(), name="estoque"),
     path("estoque/nova/", views.ProdutoCreateView.as_view(), name="produto_novo"),
     path("estoque/<int:pk>/editar/", views.ProdutoUpdateView.as_view(), name="produto_editar"),
