@@ -93,3 +93,43 @@ class PopularDemoTests(TestCase):
         call_command("popular_demo", stdout=StringIO())
         self.assertEqual(Produto.objects.count(), 5)
         self.assertEqual(Cliente.objects.count(), 2)
+
+
+class GarantirUsuarioTests(TestCase):
+    def rodar(self, **env):
+        import os
+        from io import StringIO
+        from unittest import mock
+
+        from django.core.management import call_command
+
+        with mock.patch.dict(os.environ, env, clear=False):
+            call_command("garantir_usuario", stdout=StringIO(), stderr=StringIO())
+
+    def test_cria_e_depois_atualiza_a_senha(self):
+        from django.contrib.auth import get_user_model
+
+        self.rodar(DJANGO_SUPERUSER_USERNAME="brivony", DJANGO_SUPERUSER_PASSWORD="Primeira-Senha-2026")
+        user = get_user_model().objects.get(username="brivony")
+        self.assertTrue(user.is_superuser)
+        self.assertTrue(user.check_password("Primeira-Senha-2026"))
+
+        self.rodar(DJANGO_SUPERUSER_USERNAME="brivony", DJANGO_SUPERUSER_PASSWORD="Nova-Senha-Forte-77")
+        user.refresh_from_db()
+        self.assertTrue(user.check_password("Nova-Senha-Forte-77"))
+        self.assertEqual(get_user_model().objects.count(), 1)
+
+    def test_senha_fraca_e_recusada_sem_derrubar_a_publicacao(self):
+        from django.contrib.auth import get_user_model
+
+        self.rodar(DJANGO_SUPERUSER_USERNAME="brivony", DJANGO_SUPERUSER_PASSWORD="Primeira-Senha-2026")
+        self.rodar(DJANGO_SUPERUSER_USERNAME="brivony", DJANGO_SUPERUSER_PASSWORD="123")
+        user = get_user_model().objects.get(username="brivony")
+        self.assertTrue(user.check_password("Primeira-Senha-2026"))
+        self.assertFalse(user.check_password("123"))
+
+    def test_sem_variaveis_nao_faz_nada(self):
+        from django.contrib.auth import get_user_model
+
+        self.rodar(DJANGO_SUPERUSER_USERNAME="", DJANGO_SUPERUSER_PASSWORD="")
+        self.assertFalse(get_user_model().objects.exists())
