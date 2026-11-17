@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
+from django.db import connection
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -16,6 +17,26 @@ from .forms import ClienteForm, ItemPedidoFormSet, NovoPedidoForm, ProdutoForm, 
 from .models import Cliente, Pedido, Produto
 
 SESSAO_ESTOQUE_ANTERIOR = "estoque_anterior"
+
+
+class SaudeView(View):
+    """Rota pública de saúde para o health check do Render e para o UptimeRobot.
+
+    Responde 200 quando a aplicação e o banco estão funcionando e 503 quando o
+    banco não responde, para o monitor marcar o serviço como DOWN.
+    Não exibe nenhum dado da loja.
+    """
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT 1")
+                cursor.fetchone()
+        except Exception:  # noqa: BLE001 - qualquer falha de banco deixa o serviço indisponível
+            return JsonResponse({"status": "erro", "banco": "indisponível"}, status=503)
+        return JsonResponse({"status": "ok", "banco": "ok"})
+
+    head = get
 
 
 class PainelView(LoginRequiredMixin, TemplateView):

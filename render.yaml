@@ -1,0 +1,36 @@
+# Blueprint do Render: cria o banco PostgreSQL e o serviço web do Brivony Gestão.
+# No painel do Render: New > Blueprint > escolher este repositório.
+databases:
+  - name: brivony-db
+    plan: free
+    databaseName: brivony
+    user: brivony
+
+services:
+  - type: web
+    name: brivony-gestao
+    runtime: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: gunicorn config.wsgi:application
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: DATABASE_URL
+        fromDatabase:
+          name: brivony-db
+          property: connectionString
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_SSL_REDIRECT
+        value: "True"
+      - key: DEMO_DATA
+        value: "True"
+      - key: DJANGO_SUPERUSER_USERNAME
+        value: brivony
+      # A senha é pedida no painel do Render ao aplicar o Blueprint (nunca fica no código).
+      - key: DJANGO_SUPERUSER_PASSWORD
+        sync: false

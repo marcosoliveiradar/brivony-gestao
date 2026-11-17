@@ -239,3 +239,27 @@ class TextoMaiorTests(TelaLogadaMixin, TestCase):
     def test_botao_tambem_no_login(self):
         self.client.logout()
         self.assertContains(self.client.get(reverse("login")), "data-texto-maior")
+
+
+class SaudeTests(TestCase):
+    """Rota usada pelo health check do Render e pelo monitor de disponibilidade."""
+
+    def test_responde_ok_sem_login(self):
+        resposta = self.client.get(reverse("loja:saude"))
+        self.assertEqual(resposta.status_code, 200)
+        self.assertEqual(resposta.json(), {"status": "ok", "banco": "ok"})
+
+    def test_aceita_head(self):
+        self.assertEqual(self.client.head(reverse("loja:saude")).status_code, 200)
+
+    def test_banco_fora_do_ar_retorna_503(self):
+        from unittest import mock
+
+        with mock.patch("loja.views.connection.cursor", side_effect=Exception("sem banco")):
+            resposta = self.client.get(reverse("loja:saude"))
+        self.assertEqual(resposta.status_code, 503)
+        self.assertEqual(resposta.json()["status"], "erro")
+
+    def test_nao_expoe_dados_da_loja(self):
+        criar_cliente()
+        self.assertNotContains(self.client.get(reverse("loja:saude")), "Ana")
