@@ -233,7 +233,8 @@ class TextoMaiorTests(TelaLogadaMixin, TestCase):
                 resposta = self.client.get(reverse(f"loja:{nome}"))
                 self.assertContains(resposta, "data-texto-maior")
                 self.assertContains(resposta, 'aria-pressed="false"')
-                self.assertContains(resposta, "js/acessibilidade.js")
+                # Em produção o nome ganha um hash (acessibilidade.1a2b3c.js), então confere só o início.
+                self.assertContains(resposta, "/static/js/acessibilidade.")
 
     def test_botao_tambem_no_login(self):
         self.client.logout()
