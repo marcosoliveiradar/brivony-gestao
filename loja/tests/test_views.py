@@ -222,3 +222,20 @@ class ClienteTelaTests(TelaLogadaMixin, TestCase):
         resposta = self.client.get(reverse("loja:clientes"))
         self.assertNotContains(resposta, "<script>alert(1)</script>")
         self.assertContains(resposta, "&lt;script&gt;")
+
+
+class TextoMaiorTests(TelaLogadaMixin, TestCase):
+    """RNF04: botão "A+" de texto maior presente e acessível nas telas."""
+
+    def test_botao_aparece_com_estado_para_leitor_de_tela(self):
+        for nome in ["painel", "estoque", "pedido_novo", "clientes", "pedidos"]:
+            with self.subTest(tela=nome):
+                resposta = self.client.get(reverse(f"loja:{nome}"))
+                self.assertContains(resposta, "data-texto-maior")
+                self.assertContains(resposta, 'aria-pressed="false"')
+                # Em produção o nome ganha um hash (acessibilidade.1a2b3c.js), então confere só o início.
+                self.assertContains(resposta, "/static/js/acessibilidade.")
+
+    def test_botao_tambem_no_login(self):
+        self.client.logout()
+        self.assertContains(self.client.get(reverse("login")), "data-texto-maior")

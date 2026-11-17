@@ -86,3 +86,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .lista-limpa > li + li { margin-top: 12px; }
 .btn-link { color: var(--marca); font-weight: 600; }
 .btn-secundario:focus:not(:focus-visible), .btn-secundario:active { background: #fff; color: var(--marca); border-color: var(--marca); }
+
+/* Botão "A+" (texto maior): 16px -> 20px em todo o sistema, já que o layout usa rem. */
+html.texto-maior { font-size: 20px; }
+.btn-texto { font-weight: 700; min-width: 48px; }
+.btn.btn-texto[aria-pressed="true"], .btn.btn-texto[aria-pressed="true"]:hover, .btn.btn-texto[aria-pressed="true"]:active, .btn.btn-texto[aria-pressed="true"]:focus { background: #fff; color: var(--marca); border-color: #fff; }

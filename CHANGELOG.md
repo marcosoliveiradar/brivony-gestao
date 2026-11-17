@@ -5,6 +5,10 @@ O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e 
 
 ## [Não lançado]
 
+### Adicionado
+
+- Botão "A+" que aumenta todo o texto do sistema de 16 px para 20 px e lembra a escolha no aparelho (RNF04) (#6).
+
 ## [0.1.0] - 2026-11-16
 
 Primeira versão do MVP.
