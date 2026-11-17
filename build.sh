@@ -6,11 +6,8 @@ pip install -r requirements.txt
 python manage.py collectstatic --noinput
 python manage.py migrate --noinput
 
-# Cria o usuário de acesso só se as variáveis existirem e ele ainda não existir.
-if [[ -n "${DJANGO_SUPERUSER_USERNAME:-}" && -n "${DJANGO_SUPERUSER_PASSWORD:-}" ]]; then
-  python manage.py createsuperuser --noinput --email "${DJANGO_SUPERUSER_EMAIL:-admin@example.invalid}" \
-    || echo "Usuário ${DJANGO_SUPERUSER_USERNAME} já existe; mantido."
-fi
+# Cria o usuário de acesso ou atualiza a senha dele a partir das variáveis do painel.
+python manage.py garantir_usuario
 
 # Dados fictícios de demonstração (desligue com DEMO_DATA=False).
 if [[ "${DEMO_DATA:-False}" == "True" ]]; then
