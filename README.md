@@ -152,6 +152,18 @@ Acesse **http://127.0.0.1:8000** e entre com o usuário criado.
 </details>
 
 <details>
+<summary><b>Publicação no Render</b></summary>
+
+O arquivo [`render.yaml`](render.yaml) é um *Blueprint* que cria o banco PostgreSQL e o serviço web:
+
+1. No [Render](https://render.com), entre com a conta do GitHub e clique em **New → Blueprint**.
+2. Escolha este repositório e informe a senha do usuário `brivony` em `DJANGO_SUPERUSER_PASSWORD`.
+3. O Render roda o [`build.sh`](build.sh) (dependências, `collectstatic`, `migrate`, usuário de acesso e dados fictícios) e inicia o Gunicorn.
+
+A rota pública **`/saude/`** responde `{"status": "ok", "banco": "ok"}` (HTTP 200) ou HTTP 503 se o banco cair, e é usada pelo monitor de disponibilidade (UptimeRobot).
+</details>
+
+<details>
 <summary><b>Produção</b></summary>
 
 ```bash
